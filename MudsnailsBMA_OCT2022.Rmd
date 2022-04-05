@@ -1,0 +1,163 @@
+---
+title: "MudsnailsBMA_Oct2022"
+author: "Timara Vereen"
+date: "3/21/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+mud_snails <- read.csv("./MudsnailsBMA_OCT2022.csv", skip = 4)
+mud_snails$Treatment <- factor(mud_snails$Treatment, levels = c('A', 'NS', 'S'))
+mud_snails$Time <- factor(mud_snails$Time, levels = c('T0', 'T14'))
+mud_snails
+```
+
+```{r}
+boxplot(CHLA ~ Treatment, data = mud_snails, subset=Time == "T14")
+```
+```{r}
+CHLA_mod = lm(CHLA ~ Treatment, data = mud_snails, subset = Time == "T14")
+CHLA_mod
+
+CHLA_time_mod = lm(CHLA ~ Treatment + Time + Treatment:Time , data = mud_snails)
+summary(CHLA_time_mod)
+car::Anova(CHLA_time_mod)
+
+boxplot(CHLA ~  Time + Treatment, data = mud_snails)
+
+mean(mud_snails$CHLA)
+plot(CHLA ~ Treatment, data = mud_snails, subset = Time == "T14")
+abline(CHLA_mod, lwd = 2)
+abline(h = mean(mud_snails$CHLA), col = 'red', lty = 2, lwd = 2)
+treat_mod = lm(CHLA ~ Treatment, data = mud_snails)
+# alternatively we can just update null_mod
+treat_mod = update(CHLA_mod, . ~ . + Treatment)
+
+treat_mod
+contrasts(mud_snails$Treatment)
+summary(treat_mod)
+anova(treat_mod)
+```
+```{r}
+boxplot(CHLA ~ Treatment, data = mud_snails, subset=Time == "T0")
+```
+```{r}
+CHLA_mod = lm(CHLA ~ Treatment, data = mud_snails, subset = Time == "T0")
+CHLA_mod
+
+mean(mud_snails$CHLA)
+plot(CHLA ~ Treatment, data = mud_snails, subset = Time == "T0")
+abline(CHLA_mod, lwd = 2)
+abline(h = mean(mud_snails$CHLA), col = 'red', lty = 2, lwd = 2)
+treat_mod = lm(CHLA ~ Treatment, data = mud_snails)
+# alternatively we can just update null_mod
+treat_mod = update(CHLA_mod, . ~ . + Treatment)
+
+treat_mod
+levels(mud_snails$Treatment)
+contrasts(mud_snails$Treatment)
+summary(treat_mod)
+anova(treat_mod)
+```
+```{r}
+boxplot(OM ~ Treatment, data = mud_snails, subset=Time == "T0")
+OM_mod = lm(OM ~ Treatment, data = mud_snails, subset = Time == "T0")
+OM_mod
+
+mean(mud_snails$OM)
+plot(OM ~ Treatment, data = mud_snails, subset = Time == "T0")
+abline(OM_mod, lwd = 2)
+abline(h = mean(mud_snails$OM), col = 'red', lty = 2, lwd = 2)
+trt_mod = lm(OM ~ Treatment, data = mud_snails)
+# alternatively we can just update null_mod
+trt_mod = update(OM_mod, . ~ . + Treatment)
+
+trt_mod
+levels(mud_snails$Treatment)
+contrasts(mud_snails$Treatment)
+summary(trt_mod)
+anova(trt_mod)
+```
+```{r}
+boxplot(OM ~ Treatment, data = mud_snails, subset=Time == "T14")
+OM_mod = lm(OM ~ Treatment, data = mud_snails, subset = Time == "T14")
+OM_mod
+
+mean(mud_snails$OM)
+plot(OM ~ Treatment, data = mud_snails, subset = Time == "T14")
+abline(OM_mod, lwd = 2)
+abline(h = mean(mud_snails$OM), col = 'red', lty = 2, lwd = 2)
+trt_mod = lm(OM ~ Treatment, data = mud_snails)
+# alternatively we can just update null_mod
+trt_mod = update(OM_mod, . ~ . + Treatment)
+
+trt_mod
+levels(mud_snails$Treatment)
+contrasts(mud_snails$Treatment)
+summary(trt_mod)
+anova(trt_mod)
+```
+
+```{r}
+OM_time_mod = lm(OM ~ Treatment + Time + Treatment:Time , data = mud_snails)
+summary(OM_time_mod)
+car::Anova(OM_time_mod)
+
+boxplot(OM ~  Time + Treatment, data = mud_snails)
+
+```
+
+
+```{r}
+x= mud_snails$ErosDep
+barplot(as.factor(x) ~ Treatment, data = mud_snails, subset=Time == "T14")
+Sedlvl_mod = lm(ErosDep ~ Treatment, data = mud_snails, subset = Time == "T14")
+Sedlvl_mod
+
+mean(mud_snails$ErosDep)
+plot(ErosDep ~ Treatment, data = mud_snails, subset = Time == "T14")
+abline(Sedlvl_mod, lwd = 2)
+abline(h = mean(mud_snails$ErosDep), col = 'red', lty = 2, lwd = 2)
+trt_mod = lm(ErosDep ~ Treatment, data = mud_snails)
+# alternatively we can just update null_mod
+treet_mod = update(Sedlvl_mod, . ~ . + Treatment)
+
+treet_mod
+levels(mud_snails$Treatment)
+contrasts(mud_snails$Treatment)
+summary(treet_mod)
+anova(treet_mod)
+```
+
+```{r}
+factor(x= mud_snails$Treatment)
+y = mud_snails$OM
+plot(as.factor(x), y, xlab="Treatment", ylab="Organic Matter Levels (LOI%)")
+x <- mud_snails$Treatment
+y <- mud_snails$OM
+factor(x= mud_snails$Treatment)
+
+```
+```{r}
+snails <- data.frame(x = LETTERS[1:93], y = 93:1)
+snails
+```
+
+
+```{r}
+factor(x= mud_snails$Treatment)
+y = mud_snails$OM
+barplot(as.factor(x), as.numeric(y), xlab="Treatment", ylab="Organic Matter Levels (LOI%)")
+
+```
+
