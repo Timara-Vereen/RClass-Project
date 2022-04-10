@@ -117,6 +117,35 @@ boxplot(OM ~  Time + Treatment, data = mud_snails)
 
 ```
 
+```{r}
+CHLA_time_mod = lm(CHLA ~ Treatment + Time + Treatment:Time , data = mud_snails)
+summary(CHLA_time_mod)
+car::Anova(CHLA_time_mod)
+
+boxplot(CHLA ~  Time + Treatment, data = mud_snails,
+ylab = "CHLA mg g-1 sediment", xlab = "Treatment over time",
+col= c('plum', 'steelblue4', 'springgreen4'))
+#legend
+legend('topleft', c('A', 'NS', 'S'), col = c('plum', 'steelblue4', 'springgreen4'), 
+       pch = 15 , bty = 'n')
+
+```
+
+
+
+```{r}
+OM_time_mod = lm(OM ~ Treatment + Time + Treatment:Time , data = mud_snails)
+summary(OM_time_mod)
+car::Anova(OM_time_mod)
+
+boxplot(OM ~  Time + Treatment, data = mud_snails,
+ylab = "LOI %", xlab = "Treatment over time",
+col= c('plum', 'steelblue4', 'springgreen4'))
+#legend
+legend('topleft', c('A', 'NS', 'S'), col = c('plum', 'steelblue4', 'springgreen4'), 
+       pch = 15 , bty = 'n')
+
+```
 
 ```{r}
 x= mud_snails$ErosDep
