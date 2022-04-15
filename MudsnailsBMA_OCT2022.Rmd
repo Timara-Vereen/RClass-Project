@@ -120,73 +120,60 @@ boxplot(OM ~  Time + Treatment, data = mud_snails)
 ```{r}
 CHLA_time_mod = lm(CHLA ~ Treatment + Time + Treatment:Time , data = mud_snails)
 summary(CHLA_time_mod)
-car::Anova(CHLA_time_mod)
+car::Anova(CHLA_time_mod, type = 3)
 
 boxplot(CHLA ~  Time + Treatment, data = mud_snails,
-ylab = "CHLA mg g-1 sediment", xlab = "Treatment over time",
-col= c('plum', 'steelblue4', 'springgreen4'))
+ylab = "CHLA mg g-1 sediment", xlab = "Treatment over time (T0:T14)",
+col= c('plum', 'plum', 'steelblue4', 'steelblue4', 'springgreen4', 'springgreen4'))
 #legend
-legend('topleft', c('A', 'NS', 'S'), col = c('plum', 'steelblue4', 'springgreen4'), 
+legend('topleft', c('A=Ambient', 'NS=No Snails', 'S=Snails'), col = c('plum', 'steelblue4', 'springgreen4'), 
        pch = 15 , bty = 'n')
 
 ```
+
+
+
 
 
 
 ```{r}
 OM_time_mod = lm(OM ~ Treatment + Time + Treatment:Time , data = mud_snails)
 summary(OM_time_mod)
-car::Anova(OM_time_mod)
+car::Anova(OM_time_mod, type = 3)
 
 boxplot(OM ~  Time + Treatment, data = mud_snails,
-ylab = "LOI %", xlab = "Treatment over time",
-col= c('plum', 'steelblue4', 'springgreen4'))
+ylab = "LOI %", xlab = "Treatment over time (T0:T14)",
+col= c('plum', 'plum', 'steelblue4', 'steelblue4', 'springgreen4', 'springgreen4'))
 #legend
-legend('topleft', c('A', 'NS', 'S'), col = c('plum', 'steelblue4', 'springgreen4'), 
+legend('topleft', c('A=Ambient', 'NS=No Snails', 'S=Snails'), col = c('plum', 'steelblue4', 'springgreen4'), 
        pch = 15 , bty = 'n')
 
 ```
 
 ```{r}
-x= mud_snails$ErosDep
-barplot(as.factor(x) ~ Treatment, data = mud_snails, subset=Time == "T14")
-Sedlvl_mod = lm(ErosDep ~ Treatment, data = mud_snails, subset = Time == "T14")
-Sedlvl_mod
-
+mud_snails$ErosDep <- with(mud_snails, ifelse(ErosDep == "N/A", NA, ifelse(ErosDep == "n/a", NA, as.numeric(ErosDep))))
+boxplot(ErosDep ~ Treatment, data = mud_snails, ylab = 'Erosion/Deposition (mm)', xlab ='Treatment over time (T0:T14)', col= c('plum', 'steelblue4', 'springgreen4'), subset=Time == 'T14')
+with(subset(mud_snails, Time == "T14"), tapply(ErosDep, list(Treatment), mean, na.rm = TRUE))
 mean(mud_snails$ErosDep)
-plot(ErosDep ~ Treatment, data = mud_snails, subset = Time == "T14")
-abline(Sedlvl_mod, lwd = 2)
-abline(h = mean(mud_snails$ErosDep), col = 'red', lty = 2, lwd = 2)
-trt_mod = lm(ErosDep ~ Treatment, data = mud_snails)
-# alternatively we can just update null_mod
-treet_mod = update(Sedlvl_mod, . ~ . + Treatment)
-
-treet_mod
-levels(mud_snails$Treatment)
-contrasts(mud_snails$Treatment)
-summary(treet_mod)
-anova(treet_mod)
+#legend
+legend('topleft', c('A=Ambient', 'NS=No Snails', 'S=Snails'), col = c('plum', 'steelblue4', 'springgreen4'), 
+       pch = 15 , bty = 'n')
+ErosDep_mod = lm(ErosDep ~ Treatment, data = mud_snails, subset = Time == 'T14')
+summary(ErosDep_mod)
+car::Anova(ErosDep_mod, type = 3)
 ```
 
-```{r}
-factor(x= mud_snails$Treatment)
-y = mud_snails$OM
-plot(as.factor(x), y, xlab="Treatment", ylab="Organic Matter Levels (LOI%)")
-x <- mud_snails$Treatment
-y <- mud_snails$OM
-factor(x= mud_snails$Treatment)
 
-```
-```{r}
-snails <- data.frame(x = LETTERS[1:93], y = 93:1)
-snails
-```
+
 
 
 ```{r}
-factor(x= mud_snails$Treatment)
-y = mud_snails$OM
-barplot(as.factor(x), as.numeric(y), xlab="Treatment", ylab="Organic Matter Levels (LOI%)")
-
+# type III-CHLA
+CHLA_time_mod <- lm(CHLA ~ Treatment + Time + Treatment:Time , data = mud_snails)
+car::Anova(CHLA_time_mod, type = 3)
 ```
+
+
+
+
 
