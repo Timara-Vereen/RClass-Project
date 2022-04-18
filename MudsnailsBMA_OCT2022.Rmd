@@ -17,7 +17,7 @@ When you click the **Knit** button a document will be generated that includes bo
 
 ```{r}
 mud_snails <- read.csv("./MudsnailsBMA_OCT2022.csv", skip = 4)
-mud_snails$Treatment <- factor(mud_snails$Treatment, levels = c('A', 'NS', 'S'))
+mud_snails$Treatment <- factor(mud_snails$Treatment, levels = c('NS', 'A', 'S'))
 mud_snails$Time <- factor(mud_snails$Time, levels = c('T0', 'T14'))
 mud_snails
 ```
@@ -29,7 +29,7 @@ car::Anova(CHLA_time_mod, type = 3)
 
 boxplot(CHLA ~  Time + Treatment, data = mud_snails,
 ylab = "CHLA mg g-1 sediment", xlab = "Treatment over time (T0:T14)",
-col= c('plum', 'plum', 'steelblue4', 'steelblue4', 'springgreen4', 'springgreen4'))
+col= c('steelblue4', 'steelblue4', 'plum', 'plum', 'springgreen4', 'springgreen4'))
 #legend
 legend('topleft', c('A=Ambient', 'NS=No Snails', 'S=Snails'), col = c('plum', 'steelblue4', 'springgreen4'), 
        pch = 15 , bty = 'n')
@@ -47,8 +47,8 @@ summary(OM_time_mod)
 car::Anova(OM_time_mod, type = 3)
 
 boxplot(OM ~  Time + Treatment, data = mud_snails,
-ylab = "LOI %", xlab = "Treatment over time (T0:T14)",
-col= c('plum', 'plum', 'steelblue4', 'steelblue4', 'springgreen4', 'springgreen4'))
+ylab = "Loss on Ignition(%)", xlab = "Treatment over time (T0:T14)",
+col= c('steelblue4', 'steelblue4', 'plum', 'plum', 'springgreen4', 'springgreen4'))
 #legend
 legend('topleft', c('A=Ambient', 'NS=No Snails', 'S=Snails'), col = c('plum', 'steelblue4', 'springgreen4'), 
        pch = 15 , bty = 'n')
@@ -57,7 +57,7 @@ legend('topleft', c('A=Ambient', 'NS=No Snails', 'S=Snails'), col = c('plum', 's
 
 ```{r}
 mud_snails$ErosDep <- with(mud_snails, ifelse(ErosDep == "N/A", NA, ifelse(ErosDep == "n/a", NA, as.numeric(ErosDep))))
-boxplot(ErosDep ~ Treatment, data = mud_snails, ylab = 'Erosion/Deposition (mm)', xlab ='Treatment over time (T0:T14)', col= c('plum', 'steelblue4', 'springgreen4'), subset=Time == 'T14')
+boxplot(ErosDep ~ Treatment, data = mud_snails, ylab = 'Erosion/Deposition (mm)', xlab ='Treatment ', col= c('steelblue4', 'plum', 'springgreen4'), subset=Time == 'T14')
 with(subset(mud_snails, Time == "T14"), tapply(ErosDep, list(Treatment), mean, na.rm = TRUE))
 mean(mud_snails$ErosDep)
 #legend
